@@ -50,3 +50,4 @@ def get_words(file1: str, letters) -> List[str]:
                 except IndexError:
                     continue
     return list1
+print(get_words("base.lst", ['ф', 'у', 'щ', 'б', 'л']))
