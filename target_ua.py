@@ -75,3 +75,4 @@ def check_user_words(user_words, language_part, letters, dict_of_words) -> List[
             user_loose.append(dict1[i])
     return user_right, user_loose
 print(get_words("base.lst", ['ф', 'у', 'щ', 'б', 'л']))
+print(check_user_words(['бабин', 'битий', 'бичий', 'білий', 'бісів', 'богів', 'божий', 'босий', 'булий', 'булів', 'бурий', 'ласий', 'лисий', 'литий', 'лихий', 'лівий', 'любий', 'лютий', 'усний', 'утлий', 'щирий', 'щучий', 'щучин'], "adjective", ['ф', 'у', 'щ', 'б', 'л'], get_words("base.lst", ['ф', 'у', 'щ', 'б', 'л'])))
