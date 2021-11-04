@@ -1,3 +1,4 @@
+
 """
 my project for target game
 """
@@ -5,21 +6,17 @@ from typing import List
 import random
 def generate_grid() -> List[List[str]]:
     """
-    Generates list of lists of letters - i.e. grid for the game.
-    e.g. [['I', 'G', 'E'], ['P', 'I', 'S'], ['W', 'M', 'G']]
+    generates a grid randomly from 5 letters
     """
     letters_1 = []
     letters = ['а','б','в','г','ґ','д','е',\
     'є','ж','з','и','і','ї','й','к','л','м',\
     'н','о','п','р','с','т','у','ф','х','ц','ч','щ','ь','ю','я']
-    while True:
+    while len(letters_1) < 5:
         let = random.choice(letters)
         if let not in letters_1:
             letters_1.append(let)
-        if len(letters_1) == 5:
-            return letters_1
-print(generate_grid())
-
+    return letters_1
 
 def get_words(file1: str, letters) -> List[str]:
     """
@@ -27,29 +24,37 @@ def get_words(file1: str, letters) -> List[str]:
     >>> get_words("base.lst", "щ")
     []
     """
-    if len(letters) != 5:
-        return []
     with open(file1, "r", encoding="utf-8") as file:
-        list1 = []
+        list_of_words = []
         for line in file:
             line = line.strip()
-            line =line.strip().split(" ")
-            if len(list(line)[0]) <6 or line[0][0] not in letters:
-                try:
-                    if (("n" and "i") in line[1]) or (("n" and "j") in line[1]):
-                        continue
-                    if ("/adj" in line) or ("adj" in line):
-                        list1.append((line[0], "adjective"))
-                    line[1] = list(line[1])
-                    if "n" in line[1]:
-                        list1.append((line[0], "noun"))
-                    if "v" in line[1]:
-                        list1.append((line[0],"verb"))
-                    if ("a" and "d" and "v") in line[1]:
-                        list1.append((line[0], "adverb"))
-                except IndexError:
-                    continue
-    return list1
+            ind = line.find(" ")
+            word=line[:ind]
+            letter = line[ind:]
+            letter = letter.lstrip()
+            if len(word) > 5 or len(word) < 1:
+                continue
+            for i in letters:
+                if i == word[0]:
+                    break
+            else:
+                continue
+            if "noninfl" in letter or "intj" in letter:
+                continue
+            if letter.startswith("adv") or letter.startswith("/adv"):
+                list_of_words.append((word, "adverb"))
+                continue
+            if letter.startswith("adj") or letter.startswith("/adj"):
+                list_of_words.append((word, "adjective"))
+                continue
+            if "/n" in letter or "noun" in letter:
+                list_of_words.append((word, "noun"))
+                continue
+            if "/v" in letter:
+                list_of_words.append((word, "verb"))
+                continue
+    return list_of_words
+            
 def check_user_words(user_words, language_part, letters, dict_of_words) -> List[str]:
     """
     gets list of user words and checks if it is among dictionary words
@@ -74,3 +79,15 @@ def check_user_words(user_words, language_part, letters, dict_of_words) -> List[
         if dict1[i] not in user_right:
             user_loose.append(dict1[i])
     return user_right, user_loose
+def get_user_words():
+    """
+    Reads the words entered by user
+    """
+    return input().lower().split()
+
+def language_part_gen():
+    """
+    Generates a random part of language
+    """
+    language = ['verb', 'noun', 'adjective', 'adverb']
+    return random.choice(language)
