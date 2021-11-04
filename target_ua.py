@@ -50,4 +50,28 @@ def get_words(file1: str, letters) -> List[str]:
                 except IndexError:
                     continue
     return list1
+def check_user_words(user_words, language_part, letters, dict_of_words) -> List[str]:
+    """
+    gets list of user words and checks if it is among dictionary words
+    with appropriate part of language
+
+    >>> check_user_words(["ага", 'абат'], "noun", ["і","с","л","п","а"] , (('абаз', 'noun'),\
+('абайя', 'noun'), ('абак', 'noun'), ('абат', 'noun'), ('абая', 'noun')))
+    (['абат'], ['абаз', 'абайя', 'абак', 'абая'])
+    """
+    letters =len(letters)
+    dict1 = []
+    user_right =[]
+    user_loose = []
+    for i,_ in enumerate(dict_of_words):
+        dict1.append(dict_of_words[i][0])
+    for i, _ in enumerate(user_words):
+        word = user_words[i]
+        if word in dict1:
+            if (word, language_part) in dict_of_words:
+                user_right.append(word)
+    for i, _ in enumerate(dict1):
+        if dict1[i] not in user_right:
+            user_loose.append(dict1[i])
+    return user_right, user_loose
 print(get_words("base.lst", ['ф', 'у', 'щ', 'б', 'л']))
